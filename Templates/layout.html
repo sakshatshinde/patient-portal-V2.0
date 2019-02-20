@@ -10,8 +10,11 @@
 </head>
 <body>
 
-    {% include 'Includes/_navbar.html' %}
+{% include 'Includes/_navbar.html' %}
+
+    <div class="container">
     {% block body %} {% endblock %}
+    </div>
 
 
     <!--Including bootstrap-->
