@@ -100,14 +100,28 @@ def login():
 
             # Checking pass
             if(sha256_crypt.verify(passowrd_candidate, password)):
-                app.logger.info('PASSWORD correct')         #May throw a false alarm 
-            else:
-                app.logger.info('PASSWORD incorrect')
+               # app.logger.info('PASSWORD correct')         #May throw a false alarm 
+               session['logged_in'] = True
+               session['username'] = username
 
-    else:
-        app.logger.info('Patient not found')       #May throw a false alarm      
+               flash('Welcome back', 'success')
+               return redirect(url_for('dashboard'))
+
+            else:
+                errorMsg = 'Oops recheck your password'
+                return render_template('login.html', error=errorMsg)
+            
+            # closing the connection
+            cur.close()
+        else:
+            errorMsg = 'username not found'
+            return render_template('login.html', error=errorMsg)
 
     return render_template('login.html')    
+
+@app.route('/dashboard')
+def dashboard():
+    return render_template('dashboard.html')
 
 #APP    
 if(__name__ == '__main__'):
