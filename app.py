@@ -20,18 +20,22 @@ Articles = Articles()
 
 #routes
 
+# Home
 @app.route('/')
 def index(): 
     return render_template('home.html')
 
+# ABOUT
 @app.route('/about')
 def about():
     return render_template('about.html')
 
+#Articles
 @app.route('/articles')
 def articles():
     return render_template('articles.html', articles = Articles)
 
+#Single article
 @app.route('/article/<string:id>')
 def article(id):
     return render_template('article.html', id = id)
@@ -118,6 +122,15 @@ def login():
             return render_template('login.html', error=errorMsg)
 
     return render_template('login.html')    
+
+# Logging out
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    flash('Logged out', 'success')
+    return redirect(url_for('login'))
+
 
 # DASHBOARD
 @app.route('/dashboard')
