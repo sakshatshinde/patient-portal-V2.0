@@ -26,10 +26,13 @@
           </ul>
         
         <ul class="navbar-nav navbar-right">
+          {% if session.logged_in %}
+          <li><a href="/dashboard" class="nav-link">Dashboard</a></li>
+          <li><a href="/logout" class="nav-link">Logout</a></li>
+          {% else %}
           <li><a class="nav-link" href="/register">Register</a></li>
           <li><a href="/login" class="nav-link">Login</a></li>
-          <li><a href="/logout" class="nav-link">Logout</a></li>
-
+          {% endif %}
         </ul>
 
         </div>

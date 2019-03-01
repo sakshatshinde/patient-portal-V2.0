@@ -3,7 +3,7 @@ from data import Articles
 from flask_mysqldb import MySQL
 from wtforms import Form, StringField, TextAreaField, PasswordField, validators
 from passlib.hash import sha256_crypt
-
+from functools import wraps
 app = Flask(__name__)
 
 #CONFIGURATION DATABASE
@@ -123,8 +123,18 @@ def login():
 
     return render_template('login.html')    
 
-# Logging out
+# Check logIns
+def is_logged_in(f):
+    @wraps(f)
+    def wrap(*args, **kwrags):
+        if('logged_in' in session):
+            return f(*args, **kwrags)
+        else:
+            flash('Maybe try logging in first?', 'danger')
+            return redirect(url_for('login'))
+    return wrap
 
+# Logging out
 @app.route('/logout')
 def logout():
     session.clear()
@@ -134,6 +144,7 @@ def logout():
 
 # DASHBOARD
 @app.route('/dashboard')
+@is_logged_in
 def dashboard():
     return render_template('dashboard.html')
 
