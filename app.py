@@ -6,6 +6,16 @@ from passlib.hash import sha256_crypt
 
 app = Flask(__name__)
 
+#CONFIGURATION DATABASE
+app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_USER'] = 'root'
+app.config['MYSQL_PASSWORD'] = ''
+app.config['MYSQL_DB'] = 'patient_portal'
+app.config['MYSQL_CURSORCLASS'] = 'DictCursor'      #default -> Returns Tuples, we want to use dictionary
+
+#INIT DB
+mysql = MySQL(app)
+
 Articles = Articles()
 
 #routes
@@ -36,12 +46,33 @@ class RegisterForm(Form):
     ])
     confirm = PasswordField('Confirm Password')
 
-
+#REGISTRATION
 @app.route('/register', methods = ['GET', 'POST'])
 def register():
     form = RegisterForm(request.form)
     if(request.method == 'POST' and form.validate()):
-        return render_template('register.html', form = form)
+        #catching stuff
+        name = form.name.data 
+        email = form.email.data
+        username = form.username.data
+        password = sha256_crypt.encrypt(str(form.password.data))
+
+        # cursor
+        cur = mysql.connection.cursor()
+
+        #db command
+        cur.execute("INSERT INTO patients(name, email, username, password) VALUES(%s, %s, %s, %s)", (name, email, username, password))
+
+        #commit 
+        mysql.connection.commit()
+
+        #Closing the connection
+        cur.close()
+        
+        flash("Registered Successfully", 'success')
+
+        redirect(url_for('index'))
+
     return render_template('register.html', form = form)
 
 
