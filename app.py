@@ -72,14 +72,42 @@ def register():
         #  user message
         flash("Registered Successfully", 'success')
 
-        redirect(url_for('index'))
+        return redirect(url_for('login'))
 
     return render_template('register.html', form = form)
 
 
+# LOGIN
 
+@app.route('/login', methods = ['GET', 'POST'])
+def login():
+    if(request.method == 'POST'):
+        # GET FORM FIELDS
+        username = request.form['username']
+        # pass_can -> comparing the actual correct password from db
+        passowrd_candidate = request.form['password']
 
+        # CURSOR
+        cur = mysql.connection.cursor()
 
+        # GET PATIENT by username
+        result = cur.execute("SELECT * FROM patients WHERE username = %s", [username])
+
+        if(result > 0):
+            # Acquiring stored hash
+            data = cur.fetchone()       #gets the first one from the db response
+            password = data['password']
+
+            # Checking pass
+            if(sha256_crypt.verify(passowrd_candidate, password)):
+                app.logger.info('PASSWORD correct')         #May throw a false alarm 
+            else:
+                app.logger.info('PASSWORD incorrect')
+
+    else:
+        app.logger.info('Patient not found')       #May throw a false alarm      
+
+    return render_template('login.html')    
 
 #APP    
 if(__name__ == '__main__'):
