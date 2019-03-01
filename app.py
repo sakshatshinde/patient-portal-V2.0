@@ -38,8 +38,8 @@ def article(id):
 
 class RegisterForm(Form):
     name = StringField('Name', [validators.Length(min = 1, max = 50)])
-    username = StringField('Username', [validators.Length(min=4, max = 25)])
-    email = StringField('Email', [validators.Length(min=6, max=50)])
+    username = StringField('Username', [validators.Length(min = 4, max = 25)])
+    email = StringField('Email', [validators.Length(min = 6, max = 50)])
     password = PasswordField('Password', [
         validators.DataRequired(),
         validators.EqualTo('confirm', message='Wrong passowrd')
@@ -51,24 +51,25 @@ class RegisterForm(Form):
 def register():
     form = RegisterForm(request.form)
     if(request.method == 'POST' and form.validate()):
-        #catching stuff
+        #   catching stuff
         name = form.name.data 
         email = form.email.data
         username = form.username.data
         password = sha256_crypt.encrypt(str(form.password.data))
 
-        # cursor
+        #   cursor
         cur = mysql.connection.cursor()
 
-        #db command
+        #   db command
         cur.execute("INSERT INTO patients(name, email, username, password) VALUES(%s, %s, %s, %s)", (name, email, username, password))
 
-        #commit 
+        #   commit 
         mysql.connection.commit()
 
-        #Closing the connection
+        #   closing the connection
         cur.close()
         
+        #  user message
         flash("Registered Successfully", 'success')
 
         redirect(url_for('index'))
