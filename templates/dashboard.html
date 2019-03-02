@@ -7,4 +7,36 @@
             Add Patient Data
         </a>
     <hr>
+
+    <table class="table table-striped">
+        <tr>
+            <th>
+                ID 
+            </th>
+            <th>
+                Doctor
+            </th>
+            <th>
+                Patient 
+            </th>
+            <th>
+                DATE
+            </th>
+            <th></th>
+            <th></th>
+            {% for article in articles%}
+                <td>{{medical_data.id}}</td>
+                <td>{{medical_data.patient}}</td>
+                <td>{{medical_data.doctor}}</td>
+                <td>{{medical_data.diagnosis}}</td>
+                <td>
+                    <a href="edit_patient_data/{{medical_data.id}}" class="btn btn-default pull-right">EDIT</a>
+                </td>
+                <td>
+                        <a href="#" class="btn btn-danger ">Delete</a>
+                    </td>
+            {% endfor%}
+        </tr>
+
+    </table>
 {% endblock %}

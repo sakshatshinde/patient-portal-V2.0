@@ -3,14 +3,14 @@
 {% block body %}
 
 <h1>
-    Articles
+    Medical Data
 </h1>
 
 <ul class="list-group">
 
-    {% for article in articles%}
+    {% for medical_data in medical_datas%}
 
-   <li class="list-group-item"><a href="article/{{article.id}}">{{article.title}} </a></li> 
+   <li class="list-group-item"><a href="medical_data/{{medical_data.id}}">{{medical_data.title}} </a></li> 
         
     {%endfor%}
 

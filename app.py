@@ -147,7 +147,24 @@ def logout():
 @app.route('/dashboard')
 @is_logged_in
 def dashboard():
-    return render_template('dashboard.html')
+
+    #   Create cursor
+    cur = mysql.connection.cursor()
+
+    # GET stuff
+    result = cur.execute("SELECT * FROM medical_data")
+
+    # Fetching in dictionary form
+    medical_data = cur.fetchall()
+
+    if(result > 0):
+        return render_template('dashboard.html')
+    else:
+        msg = "No medical data found"
+        return render_template('dashboard.html', msg = msg)
+    
+    #close connec
+    cur.close()
 
 class PatientDataForm(Form):
     doctor = StringField('Doctor', [validators.Length(min = 1, max = 50)])
