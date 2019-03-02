@@ -136,6 +136,7 @@ def is_logged_in(f):
 
 # Logging out
 @app.route('/logout')
+@is_logged_in
 def logout():
     session.clear()
     flash('Logged out', 'success')
@@ -147,6 +148,39 @@ def logout():
 @is_logged_in
 def dashboard():
     return render_template('dashboard.html')
+
+class PatientDataForm(Form):
+    doctor = StringField('Doctor', [validators.Length(min = 1, max = 50)])
+    diagnosis = TextAreaField('Diagnosis', [validators.Length(min = 10)])
+
+
+# ADDING PATIENT DATA
+@app.route('/add_patient_data', methods= ['GET', 'POST'])
+@is_logged_in
+def add_patient_data():
+    form = PatientDataForm(request.form)
+    if(request.method == 'POST' and form.validate()):
+        doctor = form.doctor.data
+        diagnosis = form.diagnosis.data 
+
+        #CREATE CURSOR
+        cur = mysql.connection.cursor()
+
+        #Excecute
+        cur.execute("INSERT INTO medical_data(doctor, diagnosis, patient) VALUES(%s, %s, %s)", (doctor, diagnosis, session['username']))
+
+        #COMMIT
+        mysql.connection.commit()
+
+        #CLOSE 
+
+        cur.close()
+
+        flash("Data successfully entered", "success")
+
+        return redirect(url_for('dashboard'))
+    
+    return render_template('add_patient_data.html', form = form)
 
 #APP    
 if(__name__ == '__main__'):
