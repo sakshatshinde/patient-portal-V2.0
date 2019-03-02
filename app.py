@@ -155,7 +155,7 @@ def dashboard():
     result = cur.execute("SELECT * FROM medical_data")
 
     # Fetching in dictionary form
-    medical_data = cur.fetchall()
+    articles= cur.fetchall()
 
     if(result > 0):
         return render_template('dashboard.html')
