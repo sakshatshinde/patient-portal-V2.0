@@ -14,10 +14,10 @@
                 ID 
             </th>
             <th>
-                Doctor
+                Patient 
             </th>
             <th>
-                Patient 
+                Doctor
             </th>
             <th>
                 DATE
@@ -25,17 +25,19 @@
             <th></th>
             <th></th>
             {% for article in articles%}
-                <td>{{medical_data.id}}</td>
-                <td>{{medical_data.patient}}</td>
-                <td>{{medical_data.doctor}}</td>
-                <td>{{medical_data.diagnosis}}</td>
+            <tr>
+                <td>{{article.id}}</td>
+                <td>{{article.patient}}</td>
+                <td>{{article.doctor}}</td>
+                <td>{{article.diagnosis}}</td>
                 <td>
-                    <a href="edit_patient_data/{{medical_data.id}}" class="btn btn-default pull-right">EDIT</a>
+                    <a href="edit_patient_data/{{article.id}}" class="btn btn-default pull-right">EDIT</a>
                 </td>
                 <td>
                         <a href="#" class="btn btn-danger ">Delete</a>
                     </td>
-            {% endfor%}
+            </tr> 
+            {% endfor %}
         </tr>
 
     </table>
