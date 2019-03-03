@@ -201,6 +201,50 @@ def add_patient_data():
     
     return render_template('add_patient_data.html', form = form)
 
+# EDIT patient data
+@app.route('/edit_patient_data/<string:id>', methods= ['GET', 'POST'])
+@is_logged_in
+def edit_patient_data(id):
+    #Create cursor
+    cur = mysql.connection.cursor()
+    
+    #Get the patient_data by ID
+    result = cur.execute("SELECT * FROM medical_data WHERE id = %s", [id])
+
+    article = cur.fetchone()
+
+    # GET form
+    form = PatientDataForm(request.form)
+
+    # Editing the data feilds
+    form.doctor.data = article['doctor']
+    form.diagnosis.data = article['diagnosis']
+
+    form = PatientDataForm(request.form)
+    if(request.method == 'POST' and form.validate()):
+        doctor = form.doctor.data
+        diagnosis = form.diagnosis.data 
+
+        #CREATE CURSOR
+        cur = mysql.connection.cursor()
+        #cur.execute("UPDATE medical_data(doctor, diagnosis, patient) VALUES(%s, %s, %s)", (doctor, diagnosis, session['username']))
+
+        #Excecute
+        cur.execute("UPDATE medical_data SET doctor = %s, diagnosis = %s WHERE id = %s", (doctor, diagnosis,id))
+
+        #COMMIT
+        mysql.connection.commit()
+
+        #CLOSE 
+
+        cur.close()
+
+        flash("Data successfully entered", "success")
+
+        return redirect(url_for('dashboard'))
+    
+    return render_template('edit_patient_data.html', form = form)
+
 #APP    
 if(__name__ == '__main__'):
     app.secret_key='secret123'
