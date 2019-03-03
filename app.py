@@ -245,6 +245,27 @@ def edit_patient_data(id):
     
     return render_template('edit_patient_data.html', form = form)
 
+# Delete Data
+
+@app.route('/delete_patient_data/<string:id>', methods=['GET','POST','DELETE'])
+@is_logged_in
+def delete_patient_data(id):
+    # cursor 
+    cur = mysql.connection.cursor()
+
+    #execute
+    cur.execute("DELETE FROM medical_data WHERE id = %s", [id])
+
+    #COMMIT
+    mysql.connection.commit()
+
+    #CLOSE 
+    cur.close()
+
+    flash('Data deleted', 'success')
+
+    return redirect(url_for('dashboard'))
+
 #APP    
 if(__name__ == '__main__'):
     app.secret_key='secret123'
