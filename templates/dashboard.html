@@ -2,7 +2,7 @@
 
 {% block body %}
 
-    <h1>Dashboard <small> welcome {{session.username}}</h1>
+    <h1>Dashboard: <small> Welcome {{session.username}}</h1>
         <a class = "btn btn-primary" href="/add_patient_data">
             Add Patient Data
         </a>
@@ -20,8 +20,9 @@
                 Doctor
             </th>
             <th>
-                DATE
+                Diagnosis
             </th>
+            
             <th></th>
             <th></th>
             {% for article in articles%}

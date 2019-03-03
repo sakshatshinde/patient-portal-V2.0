@@ -209,7 +209,7 @@ def edit_patient_data(id):
     cur = mysql.connection.cursor()
     
     #Get the patient_data by ID
-    result = cur.execute("SELECT * FROM medical_data WHERE id = %s", [id])
+    cur.execute("SELECT * FROM medical_data WHERE id = %s", [id])
 
     article = cur.fetchone()
 
