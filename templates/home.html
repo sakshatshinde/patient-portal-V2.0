@@ -11,4 +11,43 @@
         <a href="/login" class="btn btn-success btn-lg">Login</a>
     {% endif %}
 </div>
+
+<div class=" jumbotron text-center">
+        <h1>
+            <small>
+                Technologies used
+            </small>   
+        </h1>
+
+
+    <div class="row jumbotron">
+
+        <div class="col-sm-2">
+            <object type="image/svg+xml" data="{{ url_for('static', filename='vector_art/python.svg') }}">
+            </object>
+        </div>
+        
+        <div class="col-sm-2">
+                <object type="image/svg+xml" data="{{ url_for('static', filename='vector_art/html-5.svg') }}">
+                </object>
+            </div>
+        
+        <div class="col-sm-2">
+            <object type="image/svg+xml" data="{{ url_for('static', filename='vector_art/github.svg') }}">
+            </object>
+        </div>
+        
+        <div class="col-sm-2">
+                <object type="image/svg+xml" data="{{ url_for('static', filename='vector_art/mysql.svg') }}">
+                </object>
+        </div>
+        
+        <div class="col-sm-2">
+                <object type="image/svg+xml" data="{{ url_for('static', filename='vector_art/amazon.svg') }}">
+                </object>
+        </div>
+        
+    </div> 
+
+</div>
 {% endblock %}

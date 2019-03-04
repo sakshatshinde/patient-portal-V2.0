@@ -1,4 +1,4 @@
-from flask import Flask , request, render_template, flash, redirect, url_for, session, logging
+from flask import Flask , request, render_template, flash, redirect, url_for, session, logging, Markup
 #from data import Articles
 from flask_mysqldb import MySQL
 from wtforms import Form, StringField, TextAreaField, PasswordField, validators
