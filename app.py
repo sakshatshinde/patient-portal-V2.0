@@ -269,6 +269,6 @@ def delete_patient_data(id):
 #APP    
 if(__name__ == '__main__'):
     app.secret_key='secret123'
-    app.run(debug = True)
+    app.run(debug = True, host= '0.0.0.0')
 
 #END
