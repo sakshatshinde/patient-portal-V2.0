@@ -7,16 +7,14 @@ from functools import wraps
 app = Flask(__name__)
 
 #CONFIGURATION DATABASE
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
+app.config['MYSQL_HOST'] = 'localhost'              #loopback
+app.config['MYSQL_USER'] = 'root'                   #CREDENTIALS
 app.config['MYSQL_PASSWORD'] = ''
-app.config['MYSQL_DB'] = 'patient_portal'
+app.config['MYSQL_DB'] = 'patient_portal'           #DB name
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'      #default -> Returns Tuples, we want to use dictionary
 
 #INIT DB
 mysql = MySQL(app)
-
-#Articles = Articles()
 
 #routes
 
@@ -104,7 +102,7 @@ def login():
 
             # Checking pass
             if(sha256_crypt.verify(passowrd_candidate, password)):
-               # app.logger.info('PASSWORD correct')         #May throw a false alarm 
+               # app.logger.info('PASSWORD correct')                #May throw a false alarm 
                session['logged_in'] = True
                session['username'] = username
 
@@ -123,7 +121,7 @@ def login():
 
     return render_template('login.html')    
 
-# Check logIns
+# Check logins
 def is_logged_in(f):
     @wraps(f)
     def wrap(*args, **kwrags):
@@ -227,9 +225,8 @@ def edit_patient_data(id):
 
         #CREATE CURSOR
         cur = mysql.connection.cursor()
-        #cur.execute("UPDATE medical_data(doctor, diagnosis, patient) VALUES(%s, %s, %s)", (doctor, diagnosis, session['username']))
 
-        #Excecute
+        #EXECUTE
         cur.execute("UPDATE medical_data SET doctor = %s, diagnosis = %s WHERE id = %s", (doctor, diagnosis,id))
 
         #COMMIT
@@ -245,8 +242,8 @@ def edit_patient_data(id):
     
     return render_template('edit_patient_data.html', form = form)
 
-# Delete Data
 
+# Delete Data
 @app.route('/delete_patient_data/<string:id>', methods=['GET','POST','DELETE'])
 @is_logged_in
 def delete_patient_data(id):
